@@ -59,10 +59,9 @@
            } ,
             success: function (data) {
                 if (data.status == 1){
-                    location.href = ' {{ url('admin/article') }} ' ;
-                    layer.msg('添加文章成功', {icon: 6});
+                    layer.msg('登录成功', {icon: 6});
                 }else {
-                    layer.msg('添加文章失败', {icon: 5});
+                    layer.msg('登录失败', {icon: 5});
                 }
             }
         });
