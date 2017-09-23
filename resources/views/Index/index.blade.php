@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>登陆界面</title>
+    <script src="{{ asset('public/js/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ asset('public/js/layer.js') }}"></script>
 </head>
 <style>
     body{
@@ -30,7 +32,7 @@
     <input type="password" name="pw" placeholder="密码" id="pw">
     <br>
     <input type="text" name="yzm" placeholder="验证码" id="yzm" style="width: 250px; margin-left: -5px;">
-    <img src="" style="width: 72px; height: 27px; position: relative; top: 10px;">
+    <img src="{{ url('/public/yzm/verifyCode.jpg') }}" style="width: 72px; height: 27px; position: relative; top: 10px;">
     <br>
     <input type="submit" value="登录" onclick="submit()" style="background-color: white">
 </center>
@@ -48,7 +50,7 @@
         //ajax提交
         $.ajax({
            type: 'POST',
-           url: "",
+           url: "{{ url('login') }}",
            data: {
                 xh : xh,
                 pw : pw,
@@ -58,9 +60,9 @@
             success: function (data) {
                 if (data.status == 1){
                     location.href = ' {{ url('admin/article') }} ' ;
-                    layer.msg('更新文章成功', {icon: 6});
+                    layer.msg('添加文章成功', {icon: 6});
                 }else {
-                    layer.msg('更新文章失败', {icon: 5});
+                    layer.msg('添加文章失败', {icon: 5});
                 }
             }
         });

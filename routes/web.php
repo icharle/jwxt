@@ -13,3 +13,4 @@
 
 Route::any('index','IndexController@index');
 Route::any('yzm','IndexController@yzm');
+Route::any('login','IndexController@login');

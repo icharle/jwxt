@@ -3,20 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class IndexController extends Controller
 {
 
-    /*
+    /**
      * 后台登录页面展示
      */
     public function index()
     {
+        $this->yzm();
         return view('Index.index');
     }
 
 
-    /*
+    /**
      * 获取验证码并且保存cookie
      */
     public function yzm()
@@ -38,5 +40,13 @@ class IndexController extends Controller
         $fp = fopen(dirname(dirname(dirname(dirname(__FILE__)))) . "/public/yzm/verifyCode.jpg", "w");  //文件名
         fwrite($fp, $img); //写入文件
         fclose($fp);
+    }
+
+    /**
+     * 提交登录按钮
+     */
+    public function login()
+    {
+        dd(Input::all());
     }
 }
