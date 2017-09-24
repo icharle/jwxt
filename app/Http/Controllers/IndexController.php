@@ -94,6 +94,18 @@ class IndexController extends Controller
         header("Content-type: text/html; charset=gbk");
         $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/Public/cookie/' . session('id') . '.txt'; //cookie路径
         $url="http://10.1.2.57/xskbcx.aspx?xh=".session('xh');
+
+        //查询过去课程表
+//        $con1 = $this->login_post($url,$cookie,'');
+//        preg_match_all('/<input type="hidden" name="__VIEWSTATE" value="([^<>]+)" \/>/', $con1, $view);
+//        $post = array(
+//            '__VIEWSTATE' => $view[1][0],
+//            '__EVENTTARGET' => 'xqd',
+//            'xnd' => '2017-2018',      //学年
+//            'xqd' => '1',              //学期
+//        );
+//        $result=$this->login_post($url,$cookie,http_build_query($post));
+
         $result=$this->login_post($url,$cookie,''); //将数组连接成字符串
         echo $result;
     }
@@ -119,7 +131,7 @@ class IndexController extends Controller
             'btn_xq'=>'%D1%A7%C6%DA%B3%C9%BC%A8'  //“学期成绩”的gbk编码，视情况而定
         );
         $url1="http://10.1.2.57/xscjcx.aspx?xh=".session('xh');
-        $content=$this->login_post($url1,$cookie,$post);
+        $content=$this->login_post($url1,$cookie,http_build_query($post) );
         echo $content;
     }
 }
