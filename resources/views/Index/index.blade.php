@@ -27,14 +27,14 @@
 <body>
 <center>
     <h1>教务系统模拟登录系统</h1>
-    <input type="text" name="xh" placeholder="学号" id="xh">
-    <br>
-    <input type="password" name="pw" placeholder="密码" id="pw">
-    <br>
-    <input type="text" name="yzm" placeholder="验证码" id="yzm" style="width: 250px; margin-left: -5px;">
-    <img src="{{ url('/public/yzm/verifyCode.jpg') }}" style="width: 72px; height: 27px; position: relative; top: 10px;">
-    <br>
-    <input type="submit" value="登录" onclick="submit()" style="background-color: white">
+        <input type="text" name="xh" placeholder="学号" id="xh">
+        <br>
+        <input type="password" name="pw" placeholder="密码" id="pw">
+        <br>
+        <input type="text" name="yzm" placeholder="验证码" id="yzm" style="width: 250px; margin-left: -5px;">
+        <img src="{{ url('/public/yzm/verifyCode.jpg') }}" style="width: 72px; height: 27px; position: relative; top: 10px;">
+        <br>
+        <input type="submit" value="登录"  onclick="submit()" style="background-color: white">
 </center>
 </body>
 <script>
@@ -59,6 +59,7 @@
            } ,
             success: function (data) {
                 if (data.status == 1){
+                    location.href = '{{ url('kebiao') }}';
                     layer.msg('登录成功', {icon: 6});
                 }else {
                     layer.msg('登录失败', {icon: 5});
