@@ -71,7 +71,9 @@ class IndexController extends Controller
             'hidsc'=>''
         );
         $con2=$this->login_post($url,$cookie,http_build_query($post)); //将数组连接成字符串
-        //echo $con2;
+        preg_match_all('/<span id="xhxm">([^<>]+)/', $con2, $xm);   //正则出的数据存到$xm数组中
+        $xm = substr($xm[1][0],0,-4);
+        session(['xm' => $xm ]);
         if ($con2){
             $data = [
                 'status' => 1,
@@ -93,7 +95,7 @@ class IndexController extends Controller
     {
         header("Content-type: text/html; charset=gbk");
         $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/Public/cookie/' . session('id') . '.txt'; //cookie路径
-        $url="http://10.1.2.57/xskbcx.aspx?xh=".session('xh');
+        $url="http://10.1.2.57/xskbcx.aspx?xh=".session('xh')."&xm=".session('xm');
 
         //查询过去课程表
 //        $con1 = $this->login_post($url,$cookie,'');
@@ -117,7 +119,7 @@ class IndexController extends Controller
     {
         header("Content-type: text/html; charset=gbk");
         $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/Public/cookie/' . session('id') . '.txt';
-        $url = "http://10.1.2.57/xscjcx.aspx?xh=".session('xh');
+        $url = "http://10.1.2.57/xscjcx.aspx?xh=".session('xh')."&xm=".session('xm');
         $con1 = $this->login_post($url,$cookie,'');
         preg_match_all('/<input type="hidden" name="__VIEWSTATE" value="([^<>]+)" \/>/', $con1, $view);
         $post=array(
@@ -130,7 +132,7 @@ class IndexController extends Controller
             'ddl_kcxz'=>'',
             'btn_xq'=>'%D1%A7%C6%DA%B3%C9%BC%A8'  //“学期成绩”的gbk编码，视情况而定
         );
-        $url1="http://10.1.2.57/xscjcx.aspx?xh=".session('xh');
+        $url1="http://10.1.2.57/xscjcx.aspx?xh=".session('xh')."&xm=".session('xm');
         $content=$this->login_post($url1,$cookie,http_build_query($post) );
         echo $content;
     }
