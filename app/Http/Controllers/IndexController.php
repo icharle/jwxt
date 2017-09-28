@@ -64,8 +64,8 @@ class IndexController extends Controller
             'txtUserName'=>$xh,
             'TextBox2'=>$pw,
             'txtSecretCode'=>$code,
-            'RadioButtonList1'=>'%D1%A7%C9%FA',  //“学生”的gbk编码
-            'Button1'=>'',
+            'RadioButtonList1'=>iconv('utf-8', 'gb2312', '学生'),  //“学生”的gbk编码
+            'Button1'=>iconv('utf-8', 'gb2312', '登录'),
             'lbLanguage'=>'',
             'hidPdrs'=>'',
             'hidsc'=>''
