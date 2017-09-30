@@ -24,7 +24,7 @@ class Controller extends BaseController
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);  //不自动输出数据，要echo才行
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);  //重要，抓取跳转后数据
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie);
-        curl_setopt($ch, CURLOPT_REFERER, 'http://10.1.2.57/default2.aspx');  //重要，302跳转需要referer，可以在Request Headers找到
+        curl_setopt($ch, CURLOPT_REFERER, 'http://jwxt.gcu.edu.cn/default2.aspx');  //重要，302跳转需要referer，可以在Request Headers找到
         curl_setopt($ch, CURLOPT_POSTFIELDS,$post);  //post提交数据
         $result=curl_exec($ch);
         curl_close($ch);
