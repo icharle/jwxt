@@ -14,5 +14,7 @@
 Route::any('index','IndexController@index');
 Route::any('yzm','IndexController@yzm');
 Route::any('login','IndexController@login');
+Route::any('show','IndexController@show');
+Route::any('course','IndexController@course');
 Route::any('kebiao','IndexController@kebiao');
 Route::any('chenji','IndexController@chenji');

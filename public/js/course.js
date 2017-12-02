@@ -46,19 +46,27 @@ layui.use(['jquery','layer'],function () {
     });
 
 
+    //监听返回链接
+    $('#back').click(function () {
+        window.location.href = url1;
+    });
+
+
 
     //向后台请求数据并且绘制
     function ajax(weeks) {
         $.ajax({
             type: 'POST',
-            url: "http://keepfriend.cn/kcb/course_schedule.php",
+            url: url,
             data:{
-                week: weeks
+                week: weeks,
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             dataType: "json",
             success:function (data) {
-                var content = data.content;
-
+                var content = data;
                 //清空重绘课程表
                 for (var i = 1; i <8; i++) {
                     for (var j = 1; j <6; j++) {

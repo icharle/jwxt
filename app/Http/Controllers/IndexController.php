@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use HtmlParser\ParserDom;
 use Psy\Command\DumpCommand;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Storage;
 
 class IndexController extends Controller
 {
@@ -15,8 +18,14 @@ class IndexController extends Controller
      */
     public function index()
     {
+        session_start();
+        $id = session_id();
+        session(['id' => $id]);
         $this->yzm();
-        return view('Index.index');
+        $captcha = "public/yzm/".$id . ".jpg";
+        $captcha_path = url($captcha);
+        //echo $captcha_path;
+        return view('Index.login',compact('captcha_path'));
     }
 
 
@@ -25,8 +34,6 @@ class IndexController extends Controller
      */
     public function yzm()
     {
-        $id = session_id();
-        session(['id' => $id]);
         //COOkIE路径
         $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/public/cookie/' . session('id') . '.txt'; //cookie路径
         $verify_code_url = "http://jwxt.gcu.edu.cn/CheckCode.aspx";//验证码地址
@@ -38,7 +45,7 @@ class IndexController extends Controller
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         $img = curl_exec($curl);  //执行curl
         curl_close($curl);
-        $fp = fopen(dirname(dirname(dirname(dirname(__FILE__)))) . "/public/yzm/verifyCode.jpg", "w");  //文件名
+        $fp = fopen(dirname(dirname(dirname(dirname(__FILE__)))) . "/public/yzm/". session('id') . ".jpg", "w");  //文件名
         fwrite($fp, $img); //写入文件
         fclose($fp);
     }
@@ -91,10 +98,31 @@ class IndexController extends Controller
 
 
     /**
+     * 主页面
+     */
+    public function show()
+    {
+        $xh = session('xh');
+        $xm = urlencode( session('xm') );
+        return view('Index.index',compact('xh','xm'));
+    }
+
+
+    /**
+     * 课表展示
+     */
+    public function course()
+    {
+        return view('Index.course');
+    }
+
+
+    /**
      * 获取课表
      */
     public function kebiao()
     {
+        $input = Input::except('_token');
         header("Content-type: text/html; charset=utf8");
         $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/Public/cookie/' . session('id') . '.txt'; //cookie路径
         $url = "http://jwxt.gcu.edu.cn/xskbcx.aspx?xh=" . session('xh') . "&xm=" . session('xm');
@@ -204,7 +232,8 @@ class IndexController extends Controller
             }
         }
         $courses = json_encode($courses, JSON_UNESCAPED_UNICODE);
-        dd($courses);
+//        dd($courses);
+        return $courses;
 
     }
 
@@ -232,5 +261,6 @@ class IndexController extends Controller
         $content = $this->login_post($url1, $cookie, http_build_query($post));
         echo $content;
     }
+
 
 }

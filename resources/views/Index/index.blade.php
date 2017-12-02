@@ -1,55 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>登录系统</title>
-    <link rel="stylesheet" type="text/css" href="{{ asset('public/css/login.css') }}">
-    <script src="{{ asset('public/js/jquery-2.1.4.min.js') }}"></script>
-    <script src="{{ asset('public/js/layer.js') }}"></script>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0 user-scalable=1" />
+    <meta name="keywords" content="个人信息中心"/>
+    <meta name="description" content="个人信息中心" />
+    <title>个人信息中心</title>
+    <link rel="stylesheet" type="text/css" href="{{ asset('public/css/index.css') }}">
 </head>
 <body>
+<div class="header">
+    <p>个人信息中心</p>
+</div>
 <div class="container">
-    <div><input type="text" name="xh" id="xh" placeholder="请输入学号"></div>
-    <div><input type="password" name="pw" id="pw" placeholder="请输入密码"></div>
     <div>
-        <input type="text" id="yzm" style="width: 35%;vertical-align:middle" placeholder="请输入验证码">
-        <img src="{{ url('/public/yzm/verifyCode.jpg') }}" style="width: 30%; height: 10rem; vertical-align:middle">
+        <label>姓名:</label>
+        <span>
+            <?php
+                $r = urldecode($xm);
+                echo mb_convert_encoding($r, 'utf-8', 'gb2312');
+            ?>
+        </span>
     </div>
     <div>
-        <button onclick="submit()">登录</button>
+        <label>学号:</label>
+        <span>{{ $xh }}</span>
+    </div>
+    <div>
+        <label>课表:</label>
+        <a href="{{ url('course') }}">我的课表</a>
+    </div>
+    <div>
+        <label>成绩:</label>
+        <a href="#">我的成绩</a>
     </div>
 </div>
+
 </body>
-<script>
-
-    /*
-    提交按钮
-     */
-    function submit() {
-        var xh = $('#xh').val();
-        var pw = $('#pw').val();
-        var yzm = $('#yzm').val();
-
-        //ajax提交
-        $.ajax({
-            type: 'POST',
-            url: "{{ url('login') }}",
-            data: {
-                xh : xh,
-                pw : pw,
-                yzm : yzm,
-                _token : '{{ csrf_token() }}'
-            } ,
-            success: function (data) {
-                if (data.status == 1){
-                    location.href = '{{ url('') }}';
-                    layer.msg('登录成功', {icon: 6});
-                }else {
-                    layer.msg('登录失败', {icon: 5});
-                }
-            }
-        });
-    }
-
-</script>
 </html>
