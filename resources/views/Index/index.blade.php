@@ -2,40 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>登陆界面</title>
+    <title>登录系统</title>
+    <link rel="stylesheet" type="text/css" href="{{ asset('public/css/login.css') }}">
     <script src="{{ asset('public/js/jquery-2.1.4.min.js') }}"></script>
     <script src="{{ asset('public/js/layer.js') }}"></script>
 </head>
-<style>
-    body{
-        background-color:  #00AAFF;
-    }
-    h1{
-        margin-top: 20%;
-        font-size: 60px;
-        color: white;
-    }
-    input{
-        width: 330px;
-        height: 50px;
-        border: none;
-        border-radius: 5px;
-        margin-top: 30px;
-        box-shadow: 10px 10px 5px black;
-    }
-</style>
 <body>
-<center>
-    <h1>教务系统模拟登录系统</h1>
-        <input type="text" name="xh" placeholder="学号" id="xh">
-        <br>
-        <input type="password" name="pw" placeholder="密码" id="pw">
-        <br>
-        <input type="text" name="yzm" placeholder="验证码" id="yzm" style="width: 250px; margin-left: -5px;">
-        <img src="{{ url('/public/yzm/verifyCode.jpg') }}" style="width: 72px; height: 27px; position: relative; top: 10px;">
-        <br>
-        <input type="submit" value="登录"  onclick="submit()" style="background-color: white">
-</center>
+<div class="container">
+    <div><input type="text" name="xh" id="xh" placeholder="请输入学号"></div>
+    <div><input type="password" name="pw" id="pw" placeholder="请输入密码"></div>
+    <div>
+        <input type="text" id="yzm" style="width: 35%;vertical-align:middle" placeholder="请输入验证码">
+        <img src="{{ url('/public/yzm/verifyCode.jpg') }}" style="width: 30%; height: 10rem; vertical-align:middle">
+    </div>
+    <div>
+        <button onclick="submit()">登录</button>
+    </div>
+</div>
 </body>
 <script>
 
@@ -49,17 +32,17 @@
 
         //ajax提交
         $.ajax({
-           type: 'POST',
-           url: "{{ url('login') }}",
-           data: {
+            type: 'POST',
+            url: "{{ url('login') }}",
+            data: {
                 xh : xh,
                 pw : pw,
                 yzm : yzm,
-                _token : '{{ csrf_token() }}',
-           } ,
+                _token : '{{ csrf_token() }}'
+            } ,
             success: function (data) {
                 if (data.status == 1){
-                    location.href = '{{ url('kebiao') }}';
+                    location.href = '{{ url('') }}';
                     layer.msg('登录成功', {icon: 6});
                 }else {
                     layer.msg('登录失败', {icon: 5});

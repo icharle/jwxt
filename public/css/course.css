@@ -1,0 +1,145 @@
+
+html{
+    font-size: 43.75%;
+}
+
+.header{
+    width: 100%;
+    height: 5.5rem;
+    padding-top: 1rem;
+    text-align: center;
+    position: relative;
+}
+
+.header div{
+    display: inline;
+    color: #1E9FFF;
+    font-size: 4rem;
+}
+
+/*返回按钮*/
+.header .back{
+    float: left;
+    padding-left: 3%;
+    top: 0.8rem;
+    position: relative;
+}
+
+/*选择周数*/
+.header .week{
+    font-size: 2rem;
+    top: 1.5rem;
+    position: relative;
+}
+
+.header .week select{
+    border: none;
+    color: #1E9FFF;
+    width: 7.15rem;
+    background-color: white;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
+
+/*添加课程*/
+.header .add{
+    float: right;
+    top: 1.0rem;
+    padding-right: 2%;
+    position: relative;
+}
+
+/*表格课表的样式*/
+.weekday td{
+    width: 10rem;
+    background: #f6f9f9;
+    text-align: center;
+}
+.weekday td:first-child{
+    width: 9rem;
+}
+
+.desk_table{
+    border: none;
+    border-collapse: separate;
+    border-spacing: .2rem;
+}
+.desk_table td{
+    border: 1px solid #eee;
+    height: 3.5rem;
+    text-align: center;
+    border-radius: .6rem;
+}
+.tr_color{
+    text-align:center;
+    color:#94a6b4;
+    background:#f6f9f9;
+}
+
+
+/*添加课程弹框*/
+#add_course li{
+    margin: 3rem;
+}
+#add_course li input{
+    border:0;
+    width: 18rem;
+    border-bottom:1px solid #666;
+    padding: .5rem .5rem;
+}
+#add_course span{
+    margin-right: 2rem;
+}
+
+
+/*课程颜色*/
+.color1{
+    background: #ffc461;
+    color: #ffffff;
+}
+
+.color2{
+    background: #faa2b5;
+    color: #ffffff;
+}
+
+.color3{
+     background: #ffe162;
+     color: #ffffff;
+ }
+
+.color4{
+    background: #fdc180;
+    color: #ffffff;
+}
+
+.color5{
+    background: #79eb77;
+    color: #ffffff;
+}
+
+.color5{
+    background: #ffa09f;
+    color: #ffffff;
+}
+
+.color6{
+    background: #e5e375;
+    color: #ffffff;
+}
+
+.color7{
+    background: #c2ed5b;
+    color: #ffffff;
+}
+
+.color8{
+    background: #53e9bc;
+    color: #ffffff;
+}
+
+.color9{
+    background: #81cff8;
+    color: #ffffff;
+}
