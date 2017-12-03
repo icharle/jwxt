@@ -153,9 +153,18 @@ class IndexController extends Controller
      */
     public function index()
     {
-        $xh = session('xh');
-        $xm = session('xm');
-        return view('Index.index',compact('xh','xm'));
+        //存在session直接可以查看信息
+        if (!session('xh')){
+
+            return redirect( url('login') );
+
+        }else{
+
+            $xh = session('xh');
+            $xm = session('xm');
+            return view('Index.index',compact('xh','xm'));
+
+        }
     }
 
 
