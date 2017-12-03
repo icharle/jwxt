@@ -42,7 +42,7 @@
             } ,
             success: function (data) {
                 if (data.status == 1){
-                    location.href = '{{ url('show') }}';
+                    location.href = '{{ url('index') }}';
                     layer.msg('登录成功', {icon: 6});
                 }else {
                     layer.msg('登录失败', {icon: 5});

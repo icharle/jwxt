@@ -179,7 +179,7 @@
 <script type="text/javascript" src="{{ asset('public/js/course.js') }}"></script>
 <script type="text/javascript">
     var url = '{{ url('kebiao') }}';        //后台请求
-    var url1 = '{{ url('show') }}';         //主页面
+    var url1 = '{{ url('index') }}';         //主页面
 </script>
 </body>
 </html>

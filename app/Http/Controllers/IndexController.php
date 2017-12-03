@@ -16,7 +16,7 @@ class IndexController extends Controller
     /**
      * 后台登录页面展示
      */
-    public function index()
+    public function login()
     {
         session_start();
         $id = session_id();
@@ -54,7 +54,7 @@ class IndexController extends Controller
     /**
      * 提交登录按钮
      */
-    public function login()
+    public function login_post()
     {
         $input = Input::except('_token');
         header("Content-type: text/html; charset=gbk");//视学校而定，博主学校是gbk编码，php也采用的gbk编码方式
@@ -65,7 +65,7 @@ class IndexController extends Controller
         $code = $input['yzm'];
         $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/Public/cookie/' . session('id') . '.txt'; //cookie路径
         $url = "http://jwxt.gcu.edu.cn/default2.aspx";  //教务处地址
-        $con1 = $this->login_post($url, $cookie, '');
+        $con1 = $this->CURL($url, $cookie, '');
         preg_match_all('/<input type="hidden" name="__VIEWSTATE" value="([^<>]+)" \/>/', $con1, $view); //获取__VIEWSTATE字段并存到$view数组中
         $post = array(
             '__VIEWSTATE' => $view[1][0],
@@ -78,7 +78,7 @@ class IndexController extends Controller
             'hidPdrs' => '',
             'hidsc' => ''
         );
-        $con2 = $this->login_post($url, $cookie, http_build_query($post)); //将数组连接成字符串
+        $con2 = $this->CURL($url, $cookie, http_build_query($post)); //将数组连接成字符串
         preg_match_all('/<span id="xhxm">([^<>]+)/', $con2, $xm);   //正则出的数据存到$xm数组中
         $xm = substr($xm[1][0], 0, -4);
         session(['xm' => $xm]);
@@ -100,7 +100,7 @@ class IndexController extends Controller
     /**
      * 主页面
      */
-    public function show()
+    public function index()
     {
         $xh = session('xh');
         $xm = urlencode( session('xm') );
@@ -128,7 +128,7 @@ class IndexController extends Controller
         $url = "http://jwxt.gcu.edu.cn/xskbcx.aspx?xh=" . session('xh') . "&xm=" . session('xm');
 
         //查询过去课程表
-//        $con1 = $this->login_post($url,$cookie,'');
+//        $con1 = $this->CURL($url,$cookie,'');
 //        preg_match_all('/<input type="hidden" name="__VIEWSTATE" value="([^<>]+)" \/>/', $con1, $view);
 //        $post = array(
 //            '__VIEWSTATE' => $view[1][0],
@@ -136,9 +136,9 @@ class IndexController extends Controller
 //            'xnd' => '2017-2018',      //学年
 //            'xqd' => '1',              //学期
 //        );
-//        $result=$this->login_post($url,$cookie,http_build_query($post));
+//        $result=$this->CURL($url,$cookie,http_build_query($post));
 
-        $result = $this->login_post($url, $cookie, ''); //将数组连接成字符串
+        $result = $this->CURL($url, $cookie, ''); //将数组连接成字符串
         //echo $result;
         $html_dom = new \HtmlParser\ParserDom($result);
         $courses = array();
@@ -245,7 +245,7 @@ class IndexController extends Controller
         header("Content-type: text/html; charset=gbk");
         $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/Public/cookie/' . session('id') . '.txt';
         $url = "http://jwxt.gcu.edu.cn/xscjcx.aspx?xh=" . session('xh') . "&xm=" . session('xm');
-        $con1 = $this->login_post($url, $cookie, '');
+        $con1 = $this->CURL($url, $cookie, '');
         preg_match_all('/<input type="hidden" name="__VIEWSTATE" value="([^<>]+)" \/>/', $con1, $view);
         $post = array(
             '__EVENTTARGET' => '',
@@ -258,7 +258,7 @@ class IndexController extends Controller
             'btn_xq' => '%D1%A7%C6%DA%B3%C9%BC%A8'  //“学期成绩”的gbk编码，视情况而定
         );
         $url1 = "http://jwxt.gcu.edu.cn/xscjcx.aspx?xh=" . session('xh') . "&xm=" . session('xm');
-        $content = $this->login_post($url1, $cookie, http_build_query($post));
+        $content = $this->CURL($url1, $cookie, http_build_query($post));
         echo $content;
     }
 

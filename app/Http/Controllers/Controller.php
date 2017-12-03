@@ -17,7 +17,7 @@ class Controller extends BaseController
      * @param $post
      * @return mixed
      */
-    function login_post($url,$cookie,$post){
+    function CURL($url,$cookie,$post){
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
