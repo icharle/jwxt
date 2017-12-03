@@ -42,10 +42,14 @@
             } ,
             success: function (data) {
                 if (data.status == 1){
-                    location.href = '{{ url('index') }}';
+
                     layer.msg('登录成功', {icon: 6});
+                    location.href = '{{ url('index') }}';
+
                 }else {
-                    layer.msg('登录失败', {icon: 5});
+
+                    layer.msg(data.msg, {icon: 5});
+                    location.href = '{{ url('login') }}';
                 }
             }
         });

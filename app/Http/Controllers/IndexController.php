@@ -79,20 +79,45 @@ class IndexController extends Controller
             'hidsc' => ''
         );
         $con2 = $this->CURL($url, $cookie, http_build_query($post)); //将数组连接成字符串
-        preg_match_all('/<span id="xhxm">([^<>]+)/', $con2, $xm);   //正则出的数据存到$xm数组中
-        $xm = substr($xm[1][0], 0, -4);
-        session(['xm' => $xm]);
-        if ($con2) {
+        if (strpos($con2,'欢迎您')){
+
+            preg_match_all('/<span id="xhxm">([^<>]+)/', $con2, $xm);   //正则出的数据存到$xm数组中
+            $xm = substr($xm[1][0], 0, -6);
+            $xm = mb_convert_encoding($xm, "gb2312", "UTF-8");
+            $xm = urlencode($xm);
+            session(['xm' => $xm]);
             $data = [
                 'status' => 1,
                 'msg' => '登录成功'
             ];
-        } else {
-            $data = [
-                'status' => 0,
-                'msg' => '登录失败'
-            ];
+
+        }else{
+
+            if (strpos($con2, '密码')) {
+
+                $data = [
+                    'status' => 0,
+                    'msg' => '密码错误'
+                ];
+
+            } elseif (strpos($con2, '验证码不正确')) {
+
+                $data = [
+                    'status' => 0,
+                    'msg' => '验证码错误'
+                ];
+
+            } elseif (strpos($con2, '用户名不存在')) {
+
+                $data = [
+                    'status' => 0,
+                    'msg' => '用户名不存在'
+                ];
+
+            }
+
         }
+
         return $data;
     }
 
@@ -103,7 +128,7 @@ class IndexController extends Controller
     public function index()
     {
         $xh = session('xh');
-        $xm = urlencode( session('xm') );
+        $xm = session('xm');
         return view('Index.index',compact('xh','xm'));
     }
 

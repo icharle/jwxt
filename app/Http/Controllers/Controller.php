@@ -19,8 +19,11 @@ class Controller extends BaseController
      */
     function CURL($url,$cookie,$post){
         $ch = curl_init();
+        $header = array("Content-Type: application/x-www-form-urlencoded; charset=gb2312");
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_ENCODING, 'gb2312');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);  //不自动输出数据，要echo才行
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);  //重要，抓取跳转后数据
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie);
@@ -28,6 +31,9 @@ class Controller extends BaseController
         curl_setopt($ch, CURLOPT_POSTFIELDS,$post);  //post提交数据
         $result=curl_exec($ch);
         curl_close($ch);
+        $result = mb_convert_encoding($result, "UTF-8", "gb2312");
+        //适应ParserDom
+        $result = str_replace('gb2312', 'utf-8', $result);
         return $result;
     }
 }
