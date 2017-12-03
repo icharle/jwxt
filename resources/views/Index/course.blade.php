@@ -17,7 +17,7 @@
     <div class="back" id="back"><i class="layui-icon" style="font-size: 4rem;">&#xe65c;</i></div>
     <div class="week" id="week">
         <select name="choose_week">
-            <option value="1" selected>第 01 周</option>
+            <option value="1">第 01 周</option>
             <option value="2">第 02 周</option>
             <option value="3">第 03 周</option>
             <option value="4">第 04 周</option>
@@ -180,6 +180,8 @@
 <script type="text/javascript">
     var url = '{{ url('kebiao') }}';        //后台请求
     var url1 = '{{ url('index') }}';         //主页面
+    var weektime = '{!! $week !!}';          //当前周数
+    $('#week').find("option[value={{ $week }}]").attr("selected",true);
 </script>
 </body>
 </html>

@@ -35,8 +35,8 @@ layui.use(['jquery','layer'],function () {
     });
 
 
-    //加载完页面后自动请求，展示第一周的课程
-    ajax(1);
+    //加载完页面后自动请求，展示当前的课程
+    ajax(weektime);
 
     //选择周数
     $('#week').change(function () {

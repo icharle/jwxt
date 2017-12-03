@@ -49,7 +49,7 @@
                 }else {
 
                     layer.msg(data.msg, {icon: 5});
-                    location.href = '{{ url('login') }}';
+                    setTimeout(window.location.href = '{{ url('login') }}', 3);
                 }
             }
         });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use HtmlParser\ParserDom;
+use Carbon\Carbon;
 use Psy\Command\DumpCommand;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cookie;
@@ -12,6 +13,30 @@ use Illuminate\Support\Facades\Storage;
 
 class IndexController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->setTime();
+        View()->share('week', getenv('week'));
+    }
+
+
+    /**
+     *  设置当前教学周为环境变量；
+     *  调用方法：
+     *  getenv('week');
+     */
+    public function setTime()
+    {
+        $FirstSemester = config('app.FirstSemester');
+        $time = explode('-', $FirstSemester);
+        $week = Carbon::today()->diffInWeeks(Carbon::createFromDate($time[0], $time[1], $time[2]));   //diffInWeeks 获取指定Carbon对象与当前实例时间的星期数差, 取整
+        $week++;
+        putenv('week=' . $week);    //env文件
+        $this->week = $week;
+    }
+
+
 
     /**
      * 后台登录页面展示
