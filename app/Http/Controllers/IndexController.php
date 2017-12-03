@@ -112,6 +112,7 @@ class IndexController extends Controller
             $xm = mb_convert_encoding($xm, "gb2312", "UTF-8");
             $xm = urlencode($xm);
             session(['xm' => $xm]);
+            $this->Getkebiao();
             $data = [
                 'status' => 1,
                 'msg' => '登录成功'
@@ -320,7 +321,7 @@ class IndexController extends Controller
 
             $data['student_course'] = $courses;
             $data['time'] = time();
-            Course::where('student_id',session('xh'))->update();
+            Course::where('student_id',session('xh'))->update($data);
 
         }else{
 
@@ -358,6 +359,11 @@ class IndexController extends Controller
         $url1 = "http://jwxt.gcu.edu.cn/xscjcx.aspx?xh=" . session('xh') . "&xm=" . session('xm');
         $content = $this->CURL($url1, $cookie, http_build_query($post));
         echo $content;
+    }
+
+    public function test()
+    {
+        echo Carbon::today();
     }
 
 

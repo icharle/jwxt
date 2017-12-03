@@ -48,7 +48,7 @@ layui.use(['jquery','layer'],function () {
 
     //监听返回链接
     $('#back').click(function () {
-        window.location.href = url1;
+        location.href = url1;
     });
 
 
