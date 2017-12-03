@@ -181,7 +181,8 @@
     var url = '{{ url('kebiao') }}';        //后台请求
     var url1 = '{{ url('index') }}';         //主页面
     var weektime = '{!! $week !!}';          //当前周数
-    $('#week').find("option[value={{ $week }}]").attr("selected",true);
+    $('#week').find("option[value={{ $week }}]").attr("selected",true);       //设置页面的周数
+    var xh = '{{ $xh }}';             //学号
 </script>
 </body>
 </html>

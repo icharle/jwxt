@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use HtmlParser\ParserDom;
@@ -163,16 +164,37 @@ class IndexController extends Controller
      */
     public function course()
     {
-        return view('Index.course');
+        $xh = session('xh');
+        return view('Index.course',compact('xh'));
     }
 
 
     /**
-     * 获取课表
+     * @return array|\Illuminate\Database\Eloquent\Model|null|string|static
+     * 客户端请求课表数据
      */
     public function kebiao()
     {
         $input = Input::except('_token');
+        $result = Course::where('student_id',$input['xh'])->first();
+        if ($result){
+
+            return $result['student_course'];
+
+        }else{
+
+             return $this->Getkebiao();
+
+        }
+    }
+
+
+
+    /**
+     * 服务器端获取课表并且存库
+     */
+    public function Getkebiao()
+    {
         header("Content-type: text/html; charset=utf8");
         $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/Public/cookie/' . session('id') . '.txt'; //cookie路径
         $url = "http://jwxt.gcu.edu.cn/xskbcx.aspx?xh=" . session('xh') . "&xm=" . session('xm');
@@ -282,6 +304,23 @@ class IndexController extends Controller
             }
         }
         $courses = json_encode($courses, JSON_UNESCAPED_UNICODE);
+
+        //储存课表在数据库
+        $result = Course::where('student_id', session('xh') )->first();
+        if ($result != null){
+
+            $data['student_course'] = $courses;
+            $data['time'] = time();
+            Course::where('student_id',session('xh'))->update();
+
+        }else{
+
+            $data['student_id'] = session('xh');
+            $data['student_course'] = $courses;
+            $data['time'] = time();
+            Course::create($data);
+        }
+
 //        dd($courses);
         return $courses;
 
