@@ -341,30 +341,52 @@ class IndexController extends Controller
      */
     public function chenji()
     {
-        header("Content-type: text/html; charset=gbk");
+        header("Content-type: text/html; charset=utf-8");
         $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/Public/cookie/' . session('id') . '.txt';
         $url = "http://jwxt.gcu.edu.cn/xscjcx.aspx?xh=" . session('xh') . "&xm=" . session('xm');
         $con1 = $this->CURL($url, $cookie, '');
         preg_match_all('/<input type="hidden" name="__VIEWSTATE" value="([^<>]+)" \/>/', $con1, $view);
+
+//        $post = array(
+//            '__EVENTTARGET' => '',
+//            '__EVENTARGUMENT' => '',
+//            '__VIEWSTATE' => $view[1][0],
+//            'hidLanguage' => '',
+//            'ddlXN' => '2016-2017',  //当前学年
+//            'ddlXQ' => '1',  //当前学期
+//            'ddl_kcxz' => '',
+//            'btn_xq' => '%D1%A7%C6%DA%B3%C9%BC%A8'  //“学期成绩”的gbk编码，视情况而定
+//        );
+
         $post = array(
             '__EVENTTARGET' => '',
             '__EVENTARGUMENT' => '',
             '__VIEWSTATE' => $view[1][0],
             'hidLanguage' => '',
-            'ddlXN' => '2016-2017',  //当前学年
-            'ddlXQ' => '1',  //当前学期
+            'ddlXN' => '',
+            'ddlXQ' => '',
             'ddl_kcxz' => '',
-            'btn_xq' => '%D1%A7%C6%DA%B3%C9%BC%A8'  //“学期成绩”的gbk编码，视情况而定
+            'btn_zcj' => iconv('utf-8', 'gb2312', '历年成绩')
         );
         $url1 = "http://jwxt.gcu.edu.cn/xscjcx.aspx?xh=" . session('xh') . "&xm=" . session('xm');
         $content = $this->CURL($url1, $cookie, http_build_query($post));
-        echo $content;
+
+        $html_dom = new \HtmlParser\ParserDom($content);
+        $score=array(); //成绩数组
+        $table = $html_dom->find('table[id=DataGrid1]',0);
+        foreach($table->find('tr') as $k=> $tr){
+            $score[$k]['course_year']=$tr->find('td',0)->plaintext;     //学年
+            $score[$k]['course_term']=$tr->find('td',1)->plaintext;    //学期
+            $score[$k]['course_name']=$tr->find('td',3)->plaintext;       //课程名称
+            $score[$k]['course_credit']=$tr->find('td',6)->plaintext;       //学分
+            $score[$k]['course_points']=$tr->find('td',7)->plaintext;       //绩点
+            $score[$k]['course_score']=$tr->find('td',12)->plaintext;       //成绩
+        }
+        array_shift($score);
+        $temp = json_encode($score, JSON_UNESCAPED_UNICODE);
+        dd($temp);
     }
 
-    public function test()
-    {
-        echo Carbon::today();
-    }
 
 
 }

@@ -18,4 +18,3 @@ Route::post('login','IndexController@login_post');
 Route::get('course','IndexController@course');
 Route::any('kebiao','IndexController@kebiao');
 Route::any('chenji','IndexController@chenji');
-Route::any('test','IndexController@test');
