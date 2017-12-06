@@ -1,0 +1,73 @@
+html{
+    height:100%;
+    font-size:62.5%;
+}
+
+
+.header{
+    width: 100%;
+    height: 6rem;
+    padding-top: 2.5rem;
+    position: relative;
+}
+
+.header div{
+    display: inline;
+    color: #1E9FFF;
+}
+
+.header .back{
+    padding-left: 3%;
+    float: left;
+}
+
+.header .score{
+    top: 1.7rem;
+    left: auto;
+    float: right;
+    padding-right: 42.5%;
+    font-size: 4rem;
+    position: relative;
+}
+
+#score_list{
+    width: 85%;
+    position: relative;
+    top: 3.5rem;
+    margin: 0 auto;
+}
+
+.layui-collapse{
+    margin-top: 2rem;
+    border-radius: 1.5rem;
+    height: 10rem;
+    border: none;
+}
+
+.layui-colla-title{
+    background-color: #1E9FFF;
+    border-radius: 1.5rem;
+    color: white;
+    height: 10rem;
+    font-size: 5rem;
+    text-align: center;
+    line-height: 10rem;
+}
+
+.layui-colla-item{
+    margin-top: 5rem;
+}
+
+.layui-colla-icon{
+    font-size: 5rem;
+}
+
+.layui-colla-content{
+    border-top: none;
+    background: #fff;
+    border-radius: 1.5rem;
+}
+.layui-table td{
+    font-size: 4rem;
+    line-height: 9rem;
+}

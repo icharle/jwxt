@@ -60,7 +60,7 @@ layui.use(['jquery','layer'],function () {
             url: url,
             data:{
                 week: weeks,
-                xh : xh,
+                xh : xh
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

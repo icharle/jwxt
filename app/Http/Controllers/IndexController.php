@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Score;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use HtmlParser\ParserDom;
@@ -112,7 +113,8 @@ class IndexController extends Controller
             $xm = mb_convert_encoding($xm, "gb2312", "UTF-8");
             $xm = urlencode($xm);
             session(['xm' => $xm]);
-            $this->Getkebiao();
+            $this->Getkebiao();            //向学校服务器爬取课表
+            $this->Getchengji();           //向学校服务器爬取成绩
             $data = [
                 'status' => 1,
                 'msg' => '登录成功'
@@ -198,10 +200,39 @@ class IndexController extends Controller
         }
     }
 
+    /**
+     * 成绩清单展示
+     */
+    public function score()
+    {
+        $xh = session('xh');
+        return view('Index.score',compact('xh'));
+    }
 
 
     /**
-     * 服务器端获取课表并且存库
+     * @return mixed|void
+     * 客户端请求成绩数据
+     */
+    public function chengji()
+    {
+        $input = Input::except('_token');
+        $result = Score::where('student_id',$input['xh'])->first();
+        if ($result){
+
+            return $result['student_scores'];
+
+        }else{
+
+            return $this->Getchengji();
+
+        }
+    }
+
+
+
+    /**
+     * 向学校服务器端爬取课表并且存库
      */
     public function Getkebiao()
     {
@@ -337,9 +368,9 @@ class IndexController extends Controller
     }
 
     /**
-     * 获取成绩
+     * 向学校服务器爬取成绩并且入库
      */
-    public function chenji()
+    public function Getchengji()
     {
         header("Content-type: text/html; charset=utf-8");
         $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/Public/cookie/' . session('id') . '.txt';
@@ -383,8 +414,28 @@ class IndexController extends Controller
             $score[$k]['course_score']=$tr->find('td',12)->plaintext;       //成绩
         }
         array_shift($score);
-        $temp = json_encode($score, JSON_UNESCAPED_UNICODE);
-        dd($temp);
+        $scores = json_encode($score, JSON_UNESCAPED_UNICODE);
+
+
+        //储存课表在数据库
+        $result = Score::where('student_id', session('xh') )->first();
+        if ($result != null){
+
+            $data['student_scores'] = $scores;
+            $data['time'] = time();
+            Score::where('student_id',session('xh'))->update($data);
+
+        }else{
+
+            $data['student_id'] = session('xh');
+            $data['student_scores'] = $scores;
+            $data['time'] = time();
+            Score::create($data);
+        }
+
+
+        return $scores;
+
     }
 
 

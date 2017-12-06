@@ -11,10 +11,18 @@
 |
 */
 
+//主页面
 Route::get('index','IndexController@index');
+
+//登录
 Route::get('yzm','IndexController@yzm');
 Route::get('login','IndexController@login');
 Route::post('login','IndexController@login_post');
+
+//课表
 Route::get('course','IndexController@course');
 Route::any('kebiao','IndexController@kebiao');
-Route::any('chenji','IndexController@chenji');
+
+//成绩
+Route::get('score','IndexController@score');
+Route::any('chengji','IndexController@chengji');

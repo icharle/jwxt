@@ -32,7 +32,7 @@
     </div>
     <div>
         <label>成绩:</label>
-        <a href="#">我的成绩</a>
+        <a href="{{ url('score') }}">我的成绩</a>
     </div>
 </div>
 
