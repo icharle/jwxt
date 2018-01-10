@@ -472,5 +472,39 @@ class IndexController extends Controller
     }
 
 
+    /**
+     *教室预约审核结果
+     */
+    public function classroomshenhe()
+    {
+        header("Content-type: text/html; charset=utf-8");
+        $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/Public/cookie/' . session('id') . '.txt';
+        $url = "http://jwxt.gcu.edu.cn/xxjsjy.aspx?xh=" . session('xh') . "&xm=" . session('xm');
+        $con1 = $this->CURL($url, $cookie, '');
+        preg_match_all('/<input type="hidden" name="__VIEWSTATE" value="([^<>]+)" \/>/', $con1, $view);
+        $post = array(
+            '__EVENTTARGET' => '',
+            '__EVENTARGUMENT' => '',
+            '__VIEWSTATE' => $view[1][0],
+            //'xiaoq' => '',      //校区
+            //'jslb' => '',       //教室类别
+            //'min_zws' => '0',    //座位最小
+            //'max_zws' => '',    //座位最大
+            //'ddlSyXn' => '2017-2018',    //
+            //'ddlSyxq' => '1',     //
+            //'kssj' => '419',      //星期几+第几周
+            //'ddlDsz' => iconv('utf-8', 'gb2312', '单'),     //单双周
+            //'sjd' => " '1'|'1','0','0','0','0','0','0','0','0' ",        //预约时间
+            'xn' => '2017-2018',         //学年
+            'xq' => '1',         //学期
+            'Button3' => iconv('utf-8', 'gb2312', '预约审核结果结果')       //空教室查询 gbk编码 urlencode
+        );
+        $url1 = "http://jwxt.gcu.edu.cn/xxjsjy.aspx?xh=" . session('xh') . "&xm=" . session('xm');
+        $content = $this->CURL($url1, $cookie, http_build_query($post));
+        echo $content;
+    }
+
+
+
 
 }

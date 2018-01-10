@@ -29,3 +29,6 @@ Route::any('chengji','IndexController@chengji');
 
 //预约教室
 Route::any('classroom','IndexController@classroom');
+
+//预约教室审核结果
+Route::any('classroomshenhe','IndexController@classroomshenhe');
