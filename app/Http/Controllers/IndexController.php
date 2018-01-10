@@ -114,7 +114,7 @@ class IndexController extends Controller
             $xm = urlencode($xm);
             session(['xm' => $xm]);
             $this->Getkebiao();            //向学校服务器爬取课表
-            $this->Getchengji();           //向学校服务器爬取成绩
+            //$this->Getchengji();           //向学校服务器爬取成绩
             $data = [
                 'status' => 1,
                 'msg' => '登录成功'
@@ -386,7 +386,7 @@ class IndexController extends Controller
 //            'ddlXN' => '2016-2017',  //当前学年
 //            'ddlXQ' => '1',  //当前学期
 //            'ddl_kcxz' => '',
-//            'btn_xq' => '%D1%A7%C6%DA%B3%C9%BC%A8'  //“学期成绩”的gbk编码，视情况而定
+//            'btn_xq' => iconv('utf-8', 'gb2312', '学期成绩')
 //        );
 
         $post = array(
@@ -436,6 +436,39 @@ class IndexController extends Controller
 
         return $scores;
 
+    }
+
+    /**
+     * 教室预约
+     */
+    public function classroom()
+    {
+        header("Content-type: text/html; charset=utf-8");
+        $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/Public/cookie/' . session('id') . '.txt';
+        $url = "http://jwxt.gcu.edu.cn/xxjsjy.aspx?xh=" . session('xh') . "&xm=" . session('xm');
+        $con1 = $this->CURL($url, $cookie, '');
+        preg_match_all('/<input type="hidden" name="__VIEWSTATE" value="([^<>]+)" \/>/', $con1, $view);
+        $post = array(
+            '__EVENTTARGET' => '',
+            '__EVENTARGUMENT' => '',
+            '__VIEWSTATE' => $view[1][0],
+            'xiaoq' => '',      //校区
+            'jslb' => '',       //教室类别
+            'min_zws' => '0',    //座位最小
+            'max_zws' => '',    //座位最大
+            'kssj' => '419',       //星期几+第几周
+            'xqj' => '4',        //星期几
+            'ddlDsz' => iconv('utf-8', 'gb2312', '单'),     //单双周
+            'sjd' => " '1'|'1','0','0','0','0','0','0','0','0' ",        //预约时间
+            'Button2' => iconv('utf-8', 'gb2312', '空教室查询'),        //空教室查询 gbk编码 urlencode
+            'xn' => '2017-2018',         //学年
+            'xq' => '1',         //学期
+            'ddlSyXn' => '2017-2018',    //
+            'ddlSyxq' => '1'     //
+        );
+        $url1 = "http://jwxt.gcu.edu.cn/xxjsjy.aspx?xh=" . session('xh') . "&xm=" . session('xm');
+        $content = $this->CURL($url1, $cookie, http_build_query($post));
+        echo $content;
     }
 
 

@@ -26,3 +26,6 @@ Route::any('kebiao','IndexController@kebiao');
 //成绩
 Route::get('score','IndexController@score');
 Route::any('chengji','IndexController@chengji');
+
+//预约教室
+Route::any('classroom','IndexController@classroom');
