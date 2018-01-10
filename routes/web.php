@@ -32,3 +32,6 @@ Route::any('classroom','IndexController@classroom');
 
 //预约教室审核结果
 Route::any('classroomshenhe','IndexController@classroomshenhe');
+
+//预约教室申请原因
+Route::any('classbecause','IndexController@classbecause');

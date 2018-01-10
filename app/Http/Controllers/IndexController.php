@@ -456,8 +456,8 @@ class IndexController extends Controller
             'jslb' => '',       //教室类别
             'min_zws' => '0',    //座位最小
             'max_zws' => '',    //座位最大
-            'kssj' => '419',       //星期几+第几周
-            'xqj' => '4',        //星期几
+            'kssj' => '319',       //星期几+第几周
+            'xqj' => '3',        //星期几
             'ddlDsz' => iconv('utf-8', 'gb2312', '单'),     //单双周
             'sjd' => " '1'|'1','0','0','0','0','0','0','0','0' ",        //预约时间
             'Button2' => iconv('utf-8', 'gb2312', '空教室查询'),        //空教室查询 gbk编码 urlencode
@@ -469,6 +469,48 @@ class IndexController extends Controller
         $url1 = "http://jwxt.gcu.edu.cn/xxjsjy.aspx?xh=" . session('xh') . "&xm=" . session('xm');
         $content = $this->CURL($url1, $cookie, http_build_query($post));
         echo $content;
+        //http://jwxt.gcu.edu.cn/xxjsyy.aspx?
+        //zgh=201610098211
+        //&xn=2017-2018
+        //&xq=1
+        //&xqj=3
+        //&xqm=
+        //&dsz=%B5%A5
+        //&sjd=%B5%DA1,2%BD%DA
+        //&kssj=2018-01-10
+        //&jssj=2018-01-10
+        //&jsbh=A1-107
+        //&jsmc=A1-107
+        //&qssjd=
+        //&skcd=
+    }
+
+
+    /**
+     * 教室预约原因
+     */
+    public function classbecause()
+    {
+        header('Content-type:text/html; charset=utf-8');
+        $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/Public/cookie/' . session('id') . '.txt';
+        $url = "http://jwxt.gcu.edu.cn/xxjsyy.aspx?zgh=" . \session('xh') . "&xn=2017-2018&xq=1&xqj=3&xqm=&dsz=%B5%A5&sjd=%B5%DA1,2%BD%DA&kssj=2018-01-10&jssj=2018-01-10&jsbh=A1-107&jsbh=A1-107&jsmc=A1-107&qssjd=&skcd=";
+        $con1 = $this->CURL($url, $cookie, '');
+        echo $con1;
+
+//        $post = array(
+//            '__EVENTTARGET' => '',
+//            '__EVENTARGUMENT' => '',
+//            '__VIEWSTATE' => $view[1][0],
+//            'ddlJYDW' => iconv('utf-8', 'gb2312', '计算机工程学院'),      //借用单位
+//            'Tb_Tele' => '',       //单位电话
+//            'txtYYR' => iconv('utf-8', 'gb2312', '姓名'),    //预约人
+//            'Txtdh' => '',    //电话
+//            'txtfzr' => '',       //负责人
+//            'btnSearch' => iconv('utf-8', 'gb2312', '查询'),        //查询按钮
+//            'ddlYylb' => '1',     //原因类别  (1或者2)
+//            'txtYYLY' => iconv('utf-8', 'gb2312', '原因'),        //用途
+//            'gdwyxy' => iconv('utf-8', 'gb2312', '华南理工大学广州学院'),        //隐藏值(华南理工大学广州学院 gbk2312值)
+//        );
     }
 
 
