@@ -18,12 +18,15 @@ class Controller extends BaseController
      * @return mixed
      */
     function CURL($url,$cookie,$post){
+        //伪造Ip
+        $ip = mt_rand(1, 255) . "." . mt_rand(1, 255) . "." . mt_rand(1, 255) . "." . mt_rand(1, 255) . "";
         $ch = curl_init();
         $header = array("Content-Type: application/x-www-form-urlencoded; charset=gb2312");
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_ENCODING, 'gb2312');
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("CLIENT-IP:" . $ip . "", "X_FORWARD_FOR:" . $ip . ""));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);  //不自动输出数据，要echo才行
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);  //重要，抓取跳转后数据
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie);
