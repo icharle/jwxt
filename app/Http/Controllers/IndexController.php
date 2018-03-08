@@ -39,7 +39,6 @@ class IndexController extends Controller
     }
 
 
-
     /**
      * 后台登录页面展示
      */
@@ -49,10 +48,10 @@ class IndexController extends Controller
         $id = session_id();
         session(['id' => $id]);
         $this->yzm();
-        $captcha = "public/yzm/".$id . ".jpg";
+        $captcha = "public/yzm/" . $id . ".jpg";
         $captcha_path = url($captcha);
         //echo $captcha_path;
-        return view('Index.login',compact('captcha_path'));
+        return view('Index.login', compact('captcha_path'));
     }
 
 
@@ -72,7 +71,7 @@ class IndexController extends Controller
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         $img = curl_exec($curl);  //执行curl
         curl_close($curl);
-        $fp = fopen(dirname(dirname(dirname(dirname(__FILE__)))) . "/public/yzm/". session('id') . ".jpg", "w");  //文件名
+        $fp = fopen(dirname(dirname(dirname(dirname(__FILE__)))) . "/public/yzm/" . session('id') . ".jpg", "w");  //文件名
         fwrite($fp, $img); //写入文件
         fclose($fp);
     }
@@ -106,7 +105,7 @@ class IndexController extends Controller
             'hidsc' => ''
         );
         $con2 = $this->CURL($url, $cookie, http_build_query($post)); //将数组连接成字符串
-        if (strpos($con2,'欢迎您')){
+        if (strpos($con2, '欢迎您')) {
 
             preg_match_all('/<span id="xhxm">([^<>]+)/', $con2, $xm);   //正则出的数据存到$xm数组中
             $xm = substr($xm[1][0], 0, -6);
@@ -120,7 +119,7 @@ class IndexController extends Controller
                 'msg' => '登录成功'
             ];
 
-        }else{
+        } else {
 
             if (strpos($con2, '密码')) {
 
@@ -157,15 +156,15 @@ class IndexController extends Controller
     public function index()
     {
         //存在session直接可以查看信息
-        if (!session('xh')){
+        if (!session('xh')) {
 
-            return redirect( url('login') );
+            return redirect(url('login'));
 
-        }else{
+        } else {
 
             $xh = session('xh');
             $xm = session('xm');
-            return view('Index.index',compact('xh','xm'));
+            return view('Index.index', compact('xh', 'xm'));
 
         }
     }
@@ -177,7 +176,7 @@ class IndexController extends Controller
     public function course()
     {
         $xh = session('xh');
-        return view('Index.course',compact('xh'));
+        return view('Index.course', compact('xh'));
     }
 
 
@@ -188,14 +187,14 @@ class IndexController extends Controller
     public function kebiao()
     {
         $input = Input::except('_token');
-        $result = Course::where('student_id',$input['xh'])->first();
-        if ($result){
+        $result = Course::where('student_id', $input['xh'])->first();
+        if ($result) {
 
             return $result['student_course'];
 
-        }else{
+        } else {
 
-             return $this->Getkebiao();
+            return $this->Getkebiao();
 
         }
     }
@@ -206,7 +205,7 @@ class IndexController extends Controller
     public function score()
     {
         $xh = session('xh');
-        return view('Index.score',compact('xh'));
+        return view('Index.score', compact('xh'));
     }
 
 
@@ -217,18 +216,17 @@ class IndexController extends Controller
     public function chengji()
     {
         $input = Input::except('_token');
-        $result = Score::where('student_id',$input['xh'])->first();
-        if ($result){
+        $result = Score::where('student_id', $input['xh'])->first();
+        if ($result) {
 
             return $result['student_scores'];
 
-        }else{
+        } else {
 
             return $this->Getchengji();
 
         }
     }
-
 
 
     /**
@@ -256,17 +254,17 @@ class IndexController extends Controller
         $html_dom = new \HtmlParser\ParserDom($result);
         $courses = array();
         $coursess = $html_dom->find('#Table1 tr');
-        foreach ($coursess as $tr){
+        foreach ($coursess as $tr) {
             $first_td = $tr->find('td', 0)->getPlainText();
             if ($first_td == '时间') {
                 continue;
-            }elseif ($first_td == '早晨'){
+            } elseif ($first_td == '早晨') {
                 continue;
-            }elseif ($first_td == '上午'){
+            } elseif ($first_td == '上午') {
                 $first_td = '第1节';
-            }elseif ($first_td == '下午'){
+            } elseif ($first_td == '下午') {
                 $first_td = '第5节';
-            }elseif ($first_td == '晚上'){
+            } elseif ($first_td == '晚上') {
                 $first_td = '第9节';
             }
             //dump($first_td);
@@ -275,21 +273,21 @@ class IndexController extends Controller
             foreach ($td_array as $td) {
 
                 //去掉空的课表
-                if (strlen(trim($td->getPlainText())) != 2){
+                if (strlen(trim($td->getPlainText())) != 2) {
 
                     //var_dump($td->innerHtml());
 
                     $content = explode('<br><br>', $td->innerHtml());
                     //var_dump($content);
-                    foreach ($content as $c){
-                        if (substr($c,0,4) == '<br>'){
+                    foreach ($content as $c) {
+                        if (substr($c, 0, 4) == '<br>') {
                             $c = substr($c, 4);
                         }
                         //var_dump($c);
                         //echo "<br>";
                         //echo "<br>";
 
-                        $contents = explode('<br>',$c);
+                        $contents = explode('<br>', $c);
                         //var_dump($contents);
 
                         $course['name'] = $contents[0];    //课程名称
@@ -297,7 +295,7 @@ class IndexController extends Controller
                         $course['place'] = $contents[3];
                         $time = $contents[1];
                         preg_match_all("|周(.*)第(.*),(.*)节{第(.*)-(.*)周}|isU", $time, $time_array);
-                        $weekday = implode('',$time_array[1]);
+                        $weekday = implode('', $time_array[1]);
                         switch ($weekday) {
                             case '一':
                                 $weekday = '1';
@@ -316,21 +314,21 @@ class IndexController extends Controller
                                 break;
                         }
                         $course['weekday'] = $weekday;
-                        $course['class_begin'] = implode('',$time_array[2]);
-                        $course['class_end'] = implode('',$time_array[3]);
-                        $course['week_begin'] = implode('',$time_array[4]);
+                        $course['class_begin'] = implode('', $time_array[2]);
+                        $course['class_end'] = implode('', $time_array[3]);
+                        $course['week_begin'] = implode('', $time_array[4]);
 
-                        $end = implode('',$time_array[5]);
+                        $end = implode('', $time_array[5]);
                         if (strlen($end) > 2) {
                             preg_match_all('/\d+/', $end, $rs);
                             //var_dump($rs);
-                            $course['week_end'] = implode('',$rs[0]);
+                            $course['week_end'] = implode('', $rs[0]);
                             if (strpos($end, '双')) {
                                 $course['week_odd'] = '2';
                             } else {
                                 $course['week_odd'] = '1';
                             }
-                        }else{
+                        } else {
                             $course['week_end'] = $end;
                             $course['week_odd'] = '0';
                         }
@@ -347,14 +345,14 @@ class IndexController extends Controller
         $courses = json_encode($courses, JSON_UNESCAPED_UNICODE);
 
         //储存课表在数据库
-        $result = Course::where('student_id', session('xh') )->first();
-        if ($result != null){
+        $result = Course::where('student_id', session('xh'))->first();
+        if ($result != null) {
 
             $data['student_course'] = $courses;
             $data['time'] = time();
-            Course::where('student_id',session('xh'))->update($data);
+            Course::where('student_id', session('xh'))->update($data);
 
-        }else{
+        } else {
 
             $data['student_id'] = session('xh');
             $data['student_course'] = $courses;
@@ -403,29 +401,29 @@ class IndexController extends Controller
         $content = $this->CURL($url1, $cookie, http_build_query($post));
 
         $html_dom = new \HtmlParser\ParserDom($content);
-        $score=array(); //成绩数组
-        $table = $html_dom->find('table[id=DataGrid1]',0);
-        foreach($table->find('tr') as $k=> $tr){
-            $score[$k]['course_year']=$tr->find('td',0)->plaintext;     //学年
-            $score[$k]['course_term']=$tr->find('td',1)->plaintext;    //学期
-            $score[$k]['course_name']=$tr->find('td',3)->plaintext;       //课程名称
-            $score[$k]['course_credit']=$tr->find('td',6)->plaintext;       //学分
-            $score[$k]['course_points']=$tr->find('td',7)->plaintext;       //绩点
-            $score[$k]['course_score']=$tr->find('td',12)->plaintext;       //成绩
+        $score = array(); //成绩数组
+        $table = $html_dom->find('table[id=DataGrid1]', 0);
+        foreach ($table->find('tr') as $k => $tr) {
+            $score[$k]['course_year'] = $tr->find('td', 0)->plaintext;     //学年
+            $score[$k]['course_term'] = $tr->find('td', 1)->plaintext;    //学期
+            $score[$k]['course_name'] = $tr->find('td', 3)->plaintext;       //课程名称
+            $score[$k]['course_credit'] = $tr->find('td', 6)->plaintext;       //学分
+            $score[$k]['course_points'] = $tr->find('td', 7)->plaintext;       //绩点
+            $score[$k]['course_score'] = $tr->find('td', 12)->plaintext;       //成绩
         }
         array_shift($score);
         $scores = json_encode($score, JSON_UNESCAPED_UNICODE);
 
 
         //储存课表在数据库
-        $result = Score::where('student_id', session('xh') )->first();
-        if ($result != null){
+        $result = Score::where('student_id', session('xh'))->first();
+        if ($result != null) {
 
             $data['student_scores'] = $scores;
             $data['time'] = time();
-            Score::where('student_id',session('xh'))->update($data);
+            Score::where('student_id', session('xh'))->update($data);
 
-        }else{
+        } else {
 
             $data['student_id'] = session('xh');
             $data['student_scores'] = $scores;
@@ -547,6 +545,54 @@ class IndexController extends Controller
     }
 
 
+    /**
+     * 抢选体育课（实际应用中修改网站链接为内网链接）
+     * ①先是到达抢课页面(获得板块)
+     * ②再者到达板块实际页面
+     * ③最后获得体育课（ctlx） -> 提交按钮
+     */
+    public function GetPhysical()
+    {
+        header("Content-type: text/html; charset=utf-8");
+        $cookie = dirname(dirname(dirname(dirname(__FILE__)))) . '/Public/cookie/' . session('id') . '.txt';
+        $url = "http://jwxt.gcu.edu.cn/xf_xstyxk.aspx?xh=" . session('xh') . "&xm=" . session('xm');
+        $con1 = $this->CURL($url, $cookie, '');
+        preg_match_all('/<input type="hidden" name="__VIEWSTATE" value="([^<>]+)" \/>/', $con1, $view);
+        $post = array(
+            '__EVENTTARGET' => 'kj',
+            '__EVENTARGUMENT' => '',
+            '__VIEWSTATE' => $view[1][0],
+            'kj' => iconv('utf-8', 'gb2312', '板块（3）')        //板块（x）因学院不同而不同,x为修改值
+        );
+        $url1 = "http://jwxt.gcu.edu.cn/xf_xstyxk.aspx?xh=" . session('xh') . "&xm=" . session('xm');
+        $content = $this->CURL($url1, $cookie, http_build_query($post));
+        preg_match_all('/<input type="hidden" name="__VIEWSTATE" value="([^<>]+)" \/>/', $content, $view1);
+        $post1 = array(
+            '__EVENTTARGET' => '',
+            '__EVENTARGUMENT' => '',
+            '__VIEWSTATE' => $view1[1][0],
+            'kj' => iconv('utf-8', 'gb2312', '板块（3）'),      //板块（x）因学院不同而不同,x为修改值
+            'kcmcGrid:_ctl18:xk:' => 'on',                                  //18代表那门课，具体自己修改
+            'Button1' => iconv('utf-8', 'gb2312', ' 提 交 ')
+        );
+        $url1 = "http://jwxt.gcu.edu.cn/xf_xstyxk.aspx?xh=" . session('xh') . "&xm=" . session('xm');
+        $content1 = $this->CURL($url1, $cookie, http_build_query($post1));
+        //判断是否抢课成功
+        $html_dom = new \HtmlParser\ParserDom($content1);
+        $data = $html_dom->find('#DataGrid2 tr tr');
+        if ($data != null) {
+            echo "抢课成功！";
+        } else if ($data == null) {
+            echo "抢课失败！";
+        }
+
+        //判断弹出窗口(暂时存在问题)
+        if (strpos($content1, '现在不是选课时间')) {
+            echo "现在不是选课时间";
+        } else if (strpos($content1, '人数超过限制')) {
+            echo "人数超过限制";
+        }
+    }
 
 
 }

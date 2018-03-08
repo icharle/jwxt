@@ -35,3 +35,6 @@ Route::any('classroomshenhe','IndexController@classroomshenhe');
 
 //预约教室申请原因
 Route::any('classbecause','IndexController@classbecause');
+
+//选课
+Route::any('qk','IndexController@GetPhysical');
