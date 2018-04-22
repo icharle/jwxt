@@ -26,3 +26,12 @@ Route::any('kebiao','IndexController@kebiao');
 //成绩
 Route::get('score','IndexController@score');
 Route::any('chengji','IndexController@chengji');
+
+
+/**
+ * 图书馆
+ */
+Route::get('liblogin','LibraryController@login');
+Route::post('liblogin','LibraryController@login_post');
+Route::get('jieye','LibraryController@jieye');
+
